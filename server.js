@@ -6,7 +6,7 @@ const express = require('express'),
 let aliveList = [];
 const limiter = rateLimit({
     windowMs: 86400000,
-    max: 10
+    max: 1
 });
 const File = require('./file');
 const file = new File();
