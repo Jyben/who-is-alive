@@ -62,7 +62,7 @@ app.route('/imalive').post((req, res) => {
     } else {
         const counter = alive.counters.find(x => x.date === new Date().toLocaleDateString());
         if (counter === undefined) {
-            aliveList.counters.push({
+            alive.counters.push({
                 date: new Date().toLocaleDateString(),
                 count: 1
             });
