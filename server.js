@@ -56,7 +56,8 @@ app.route('/imalive').post((req, res) => {
             application: req.body.application,
             counters: [{
                 date: new Date().toLocaleDateString(),
-                count: 1
+                count: 1,
+                versions: [req.body.version]
             }]
         });
     } else {
@@ -64,11 +65,13 @@ app.route('/imalive').post((req, res) => {
         if (counter === undefined) {
             alive.counters.push({
                 date: new Date().toLocaleDateString(),
-                count: 1
+                count: 1,
+                versions: [req.body.version]
             });
         }
         else {
             counter.count++;
+            counter.versions.push(req.body.version)
         }
     }
 
