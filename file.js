@@ -1,15 +1,23 @@
 const objectToFile = require('object-to-file');
 
-var db = new objectToFile.default('alive');
+var alive = new objectToFile.default('alive');
+var ad = new objectToFile.default('ad');
 
 let File = function () { };
 
-File.prototype.save = function (object) {
-    db.push('Alive', object);
+File.prototype.saveAlive = function (object) {
+    alive.push('Alive', object);
 }
 
-File.prototype.read = function () {
-    return db.read('Alive');
+File.prototype.readAlive = function () {
+    return alive.read('Alive');
+}
+File.prototype.saveAd = function (object) {
+    ad.push('Ad', object);
+}
+
+File.prototype.readAd = function () {
+    return ad.read('Ad');
 }
 
 module.exports = File;

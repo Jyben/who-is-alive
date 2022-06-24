@@ -1,24 +1,31 @@
 const express = require('express'),
     app = express(),
-    port = process.env.PORT || 8080,
+    port = process.env.PORT || 3000,
     bodyParser = require('body-parser'),
     rateLimit = require('express-rate-limit');
 let aliveList = [];
+let ad = {};
 const limiter = rateLimit({
     windowMs: 86400000,
     max: 1
 });
 const File = require('./file');
 const file = new File();
-const aliveListPersisted = file.read();
+const aliveListPersisted = file.readAlive();
+const adPersisted = file.readAd();
 
 if (aliveListPersisted !== undefined) {
     aliveList = aliveListPersisted;
 }
 
+if (adPersisted !== undefined) {
+    ad = adPersisted;
+}
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/api/imalive', limiter);
+app.disable('x-powered-by');
 
 // app.route('/whoisalive').get((req, res) => {
 //     if (req.body.application === undefined) {
@@ -43,6 +50,13 @@ app.use('/api/imalive', limiter);
 
 //     res.json(counters);
 // });
+
+app.set('trust proxy', 2)
+
+app.route('/').get((req, res) => {
+    res.send("");
+    return;
+});
 
 app.route('/api/imalive').post((req, res) => {
     console.log(req.headers);
@@ -87,7 +101,19 @@ app.route('/api/imalive').post((req, res) => {
         }
     }
 
-    file.save(aliveList);
+    file.saveAlive(aliveList);
+
+    res.sendStatus(200);
+});
+
+app.route('/api/ad').post((req, res) => {
+    if (ad.count === undefined) {
+        ad.count = 1;
+    } else {
+        ad.count++;
+    }
+
+    file.saveAd(ad);
 
     res.sendStatus(200);
 });
