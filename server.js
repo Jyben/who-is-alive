@@ -25,6 +25,7 @@ if (adPersisted !== undefined) {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/api/imalive', limiter);
+app.use('/api/ad', limiter);
 app.disable('x-powered-by');
 
 // app.route('/whoisalive').get((req, res) => {
